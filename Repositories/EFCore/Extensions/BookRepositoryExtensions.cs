@@ -1,8 +1,11 @@
 ﻿using Entities.Models;
+using System.Reflection;
+using System.Text;
+using System.Linq.Dynamic.Core;
 
 namespace Repositories.EFCore.Extensions
 {
-    public static class BookRepositıryExtensions
+    public static class BookRepositoryExtensions
     {
         public static IQueryable<Book> FilterBooks(this IQueryable<Book> books, uint minPrice, uint maxPrice) =>
             books.Where(book =>
@@ -19,6 +22,19 @@ namespace Repositories.EFCore.Extensions
             book.Title
             .ToLower()
             .Contains(lowerCaseTerm));
+        }
+
+        public static IQueryable<Book> Sort(this IQueryable<Book> books, string orderByQueryString)
+        {
+            if (string.IsNullOrWhiteSpace(orderByQueryString))
+                return books.OrderBy(b => b.Id);
+
+            var orderQuery = OrderQueryBuilder.CreateOrderQuery<Book>(orderByQueryString);
+
+            if (orderQuery is null)
+                return books.OrderBy(b => b.Id);
+
+            return books.OrderBy(orderQuery);
         }
 
     }
