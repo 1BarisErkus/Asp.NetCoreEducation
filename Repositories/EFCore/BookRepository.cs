@@ -32,5 +32,12 @@ namespace Repositories.EFCore
             .SingleOrDefaultAsync();
 
         public void UpdateOneBook(Book book) => Update(book);
+
+        public async Task<List<Book>> GetAllBooksAsync(bool trackChanges)
+        {
+            return await FindAll(trackChanges)
+                .OrderBy(b => b.Id)
+                .ToListAsync();
+        }
     }
 }
