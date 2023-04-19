@@ -1,10 +1,5 @@
 ﻿using Entities.Models;
 using Entities.RequestFeature;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories.Contracts
 {
@@ -16,5 +11,7 @@ namespace Repositories.Contracts
         void CreateOneBook(Book book);
         void DeleteOneBook(Book book);
         void UpdateOneBook(Book book);
+
+        Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trackChanges);
     }
 }
